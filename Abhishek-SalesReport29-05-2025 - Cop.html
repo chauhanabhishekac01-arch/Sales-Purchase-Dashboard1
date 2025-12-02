@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Reports Dashboard</title>
+    <style>
+        /* ---------- General Body Styling ---------- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            color: #2c3e50;
+            transition: background 0.5s ease;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 50px;
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .report-section {
+            margin-bottom: 70px;
+        }
+
+        .report-section h2 {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #34495e;
+            border-left: 5px solid #27ae60;
+            padding-left: 10px;
+        }
+
+        /* ---------- Navbar ---------- */
+        .navbar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 20px;
+            background: #27ae60;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            background: #2ecc71;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            position: relative;
+        }
+
+        .nav-button:hover {
+            background: #27ae60;
+            border: 1px solid black;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background: red;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            min-width: 250px;
+            z-index: 200;
+        }
+
+        .dropdown .branch {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dropdown .branch:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown .branch:hover {
+            background: #990000;
+        }
+
+        .dropdown .branch a {
+            text-decoration: none;
+            color: #2c3e50;
+            margin-left: 10px;
+            font-weight: 500;
+        }
+
+        /* ---------- Charts Container ---------- */
+        .charts-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 30px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chart-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 580px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffffff, #f7fafc);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.18);
+        }
+
+        .chart-card iframe.chart {
+            width: 100%;
+            max-width: 650px;
+            height: 320px;
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        /* ---------- Report Links ---------- */
+        .report-links-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .report-link {
+            flex: 1 1 220px;
+            text-align: center;
+            padding: 14px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-link::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 0;
+            left: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.3);
+            transition: 0.3s ease;
+        }
+
+        .report-link:hover::after {
+            height: 100%;
+        }
+
+        .report-link:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 900px) {
+            .charts-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .chart-card iframe.chart {
+                height: 280px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .report-link {
+                flex: 1 1 100%;
+            }
+
+            .dropdown {
+                right: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ---------- Navbar ---------- -->
+    <div class="navbar">
+        <div class="nav-button" id="contactBtn">Contact Branch
+            <div class="dropdown" id="contactDropdown">
+                <div class="branch">
+                    Branch A
+                    <span>
+                        <a href="https://wa.me/919106991659?text=Hi%2C%20are%20you%20free%20to%20discuss%20about%20the%20branch%20operation%20status" target="_blank">WhatsApp</a>
+                        <a href="tel:9106991659">Call</a>
+                    </span>
+                </div>
+                <div class="branch">
+                    Branch B
+                    <span>
+                        <a href="https://wa.me/919999041935?text=Hi%2C%20are%20you%20free%20to%20discuss%20about%20the%20branch%20operation%20status" target="_blank">WhatsApp</a>
+                        <a href="tel:9999041935">Call</a>
+                    </span>
+                </div>
+                <div class="branch">
+                    Branch C
+                    <span>
+                        <a href="https://wa.me/919606489993?text=Hi%2C%20are%20you%20free%20to%20discuss%20about%20the%20branch%20operation%20status" target="_blank">WhatsApp</a>
+                        <a href="tel:9606489993">Call</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1>Reports Dashboard</h1>
+
+    <!-- ---------- Purchase Section ---------- -->
+    <div class="report-section">
+        <h2>Purchase Reports</h2>
+
+        <div class="charts-container">
+            <div class="chart-card">
+                <iframe class="chart" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRicFv1vovchRGW9QQg-BOTaCtdRsJP8UMFjidOiLvArLUu_Gn77Q8L-YbuBDm7gC_DRp5UhXYaCUu2/pubchart?oid=1378177975&format=interactive"></iframe>
+            </div>
+            <div class="chart-card">
+                <iframe class="chart" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRicFv1vovchRGW9QQg-BOTaCtdRsJP8UMFjidOiLvArLUu_Gn77Q8L-YbuBDm7gC_DRp5UhXYaCUu2/pubchart?oid=1225651083&format=interactive"></iframe>
+            </div>
+        </div>
+
+        <div class="report-links-container">
+            <div class="report-link" onclick="window.open('https://docs.google.com/spreadsheets/d/1I5s9qO4wyJEr8i2_2MuwEQAWrdGXmnx5EVI_bykWIew/edit?gid=0', '_blank')">Purchase Report A</div>
+            <div class="report-link" onclick="window.open('https://docs.google.com/spreadsheets/d/1v1hElyzUEAs_UCHvP0DjbdqJRnvaXyOoKXILlIs-DBk/edit?gid=0', '_blank')">Purchase Report B</div>
+            <div class="report-link" onclick="window.open('https://docs.google.com/spreadsheets/d/1_MVO2bT3LIP_YHEG0R_KHxoths65MDaxecLzRLjzSyU/edit?gid=0', '_blank')">Purchase Report C</div>
+        </div>
+    </div>
+
+    <!-- ---------- Sales Section ---------- -->
+    <div class="report-section">
+        <h2>Sales Reports</h2>
+
+        <div class="charts-container">
+            <div class="chart-card">
+                <iframe class="chart" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRicFv1vovchRGW9QQg-BOTaCtdRsJP8UMFjidOiLvArLUu_Gn77Q8L-YbuBDm7gC_DRp5UhXYaCUu2/pubchart?oid=676597423&format=interactive"></iframe>
+            </div>
+            <div class="chart-card">
+                <iframe class="chart" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRicFv1vovchRGW9QQg-BOTaCtdRsJP8UMFjidOiLvArLUu_Gn77Q8L-YbuBDm7gC_DRp5UhXYaCUu2/pubchart?oid=865282605&format=interactive"></iframe>
+            </div>
+        </div>
+
+        <div class="report-links-container">
+            <div class="report-link" onclick="window.open('https://docs.google.com/spreadsheets/d/1wODZr2M-v1ceM97A5ul0GcvKBa2SFMBW57zg-qwjy3I/edit?gid=0', '_blank')">Sales Report A</div>
+            <div class="report-link" onclick="window.open('https://docs.google.com/spreadsheets/d/15D20bsx37gCY-B9XogjIA9IhVXP3P0YfborUkqe5Hns/edit?gid=0', '_blank')">Sales Report B</div>
+            <div class="report-link" onclick="window.open('https://docs.google.com/spreadsheets/d/1w8PRoEfkNdMksTa86csBLREDSlEQHRet_uvsHzYeVxI/edit?gid=0', '_blank')">Sales Report C</div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle dropdown
+        const contactBtn = document.getElementById('contactBtn');
+        const dropdown = document.getElementById('contactDropdown');
+
+        contactBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            dropdown.style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
